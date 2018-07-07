@@ -39,6 +39,15 @@ const styles = theme => ({
   },
   hidden: {
     display: 'none'
+  },
+  searchBox: {
+    width: '100%',
+    justifyContent: 'center'
+  },
+  export: {
+    position: 'fixed',
+    bottom: '130px',
+    right: '20px'
   }
 });
 

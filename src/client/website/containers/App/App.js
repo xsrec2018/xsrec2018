@@ -12,6 +12,9 @@ import { socketActions } from '../../actions/socket';
 import HeaderContent from '../Routes/HeaderContent';
 import ConnectingDialog from '../ConnectingDialog';
 import ChangeNameDialog from '../ChangeNameDialog';
+import MergeCardsConfirmationDialog from '../MergeCardsConfirmationDialog';
+import ExportCardsDialog from '../ExportCardsDialog';
+import RetroTimerDialog from '../RetroTimerDialog';
 import Notifications from '../../containers/Notifications';
 import LocaleProvider from '../../i18n/LocaleProvider';
 
@@ -27,6 +30,9 @@ export const AppContainer = ({ store, ...rest }) => (
               dialogChildren={[
                 <ConnectingDialog key="connectingDialog" />,
                 <ChangeNameDialog key="changeNameDialog" />,
+                <MergeCardsConfirmationDialog key="mergeCardsDialog" />,
+                <ExportCardsDialog key="exportCardsDialog" />,
+                <RetroTimerDialog key="retroTimerDialog" />,
                 <Notifications key="notifications" />
               ]}
             >

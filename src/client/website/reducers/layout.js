@@ -1,6 +1,11 @@
 import deepClone from '../services/utils/deepClone';
 import {
-  LAYOUT_ADD_MESSAGE, LAYOUT_OPEN_CHANGE_NAME_DIALOG, LAYOUT_REMOVE_MESSAGE,
+  LAYOUT_ADD_MESSAGE,
+  LAYOUT_OPEN_CHANGE_NAME_DIALOG,
+  LAYOUT_OPEN_EXPORT_DIALOG,
+  LAYOUT_OPEN_MERGE_CARDS_DIALOG,
+  LAYOUT_OPEN_RETRO_TIMER_DIALOG,
+  LAYOUT_REMOVE_MESSAGE,
   LAYOUT_SET_LOCALE
 } from '../actions/layout';
 import lookupLocale from '../i18n/services/lookupLocale';
@@ -11,6 +16,10 @@ import localStorage from '../services/localStorage';
 // ------------------------------------
 export const LAYOUT_LOCALE_KEY = 'locale';
 export const LAYOUT_CHANGE_NAME_DIALOG_OPEN_KEY = 'isChangeNameDialogOpen';
+export const LAYOUT_EXPORT_DIALOG_OPEN_KEY = 'isExportDialogOpen';
+export const LAYOUT_MERGE_CARDS_DIALOG_PAYLOAD = 'mergeCardsDialogPayload';
+export const LAYOUT_MERGE_CARDS_DIALOG_OPEN_KEY = 'isMergeCardsDialogOpen';
+export const LAYOUT_RETRO_TIMER_DIALOG_OPEN_KEY = 'isRetroTimerDialogOpen';
 export const LAYOUT_MESSAGES_KEY = 'messages';
 const LAYOUT_LAST_MESSAGE_ID_KEY = 'lastMessageId';
 
@@ -20,6 +29,10 @@ const LAYOUT_LAST_MESSAGE_ID_KEY = 'lastMessageId';
 const initialState = {
   [LAYOUT_LOCALE_KEY]: localStorage.getItem(LAYOUT_LOCALE_KEY) || lookupLocale(),
   [LAYOUT_CHANGE_NAME_DIALOG_OPEN_KEY]: false,
+  [LAYOUT_EXPORT_DIALOG_OPEN_KEY]: false,
+  [LAYOUT_MERGE_CARDS_DIALOG_OPEN_KEY]: false,
+  [LAYOUT_MERGE_CARDS_DIALOG_PAYLOAD]: null,
+  [LAYOUT_RETRO_TIMER_DIALOG_OPEN_KEY]: false,
   [LAYOUT_MESSAGES_KEY]: [],
   [LAYOUT_LAST_MESSAGE_ID_KEY]: 0
 };
@@ -28,6 +41,31 @@ const ACTION_HANDLERS = {
     const newState = deepClone(state);
 
     newState[LAYOUT_CHANGE_NAME_DIALOG_OPEN_KEY] = payload;
+
+    return newState;
+  },
+  [LAYOUT_OPEN_EXPORT_DIALOG]: (state, { payload }) => {
+    const newState = deepClone(state);
+
+    newState[LAYOUT_EXPORT_DIALOG_OPEN_KEY] = payload;
+
+    return newState;
+  },
+  [LAYOUT_OPEN_MERGE_CARDS_DIALOG]: (state, { payload }) => {
+    const newState = deepClone(state);
+
+    newState[LAYOUT_MERGE_CARDS_DIALOG_OPEN_KEY] = payload.open;
+    newState[LAYOUT_MERGE_CARDS_DIALOG_PAYLOAD] = {
+      sourceCardId: payload.sourceCardId,
+      targetCardId: payload.targetCardId
+    };
+
+    return newState;
+  },
+  [LAYOUT_OPEN_RETRO_TIMER_DIALOG]: (state, { payload }) => {
+    const newState = deepClone(state);
+
+    newState[LAYOUT_RETRO_TIMER_DIALOG_OPEN_KEY] = payload.open;
 
     return newState;
   },

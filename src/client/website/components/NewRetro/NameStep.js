@@ -39,7 +39,7 @@ class NameStep extends Component {
     return (
       <BaseStep
         step={0}
-        maxSteps={3}
+        maxSteps={4}
         onNext={!inProgress && canCreateRetro ? this.newRetro : undefined}
         {...this.props}
       >

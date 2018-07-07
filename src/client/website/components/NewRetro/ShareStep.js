@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl';
 import { CardContent } from 'material-ui/Card';
 import { Button, TextField, Typography } from 'material-ui';
 import BaseStep from './BaseStep';
-import { newRetroColumnsRoutePath } from '../../routes/NewRetro/MainRoutes';
+import { newRetroTimerRoutePath } from '../../routes/NewRetro/MainRoutes';
 import { retroRoutePath } from '../../routes/Retro/MainRoutes';
 
 class ShareStep extends Component {
@@ -18,9 +18,9 @@ class ShareStep extends Component {
 
     return (
       <BaseStep
-        step={2}
-        maxSteps={3}
-        onBack={() => history.push(newRetroColumnsRoutePath(retroShareParamId))}
+        step={3}
+        maxSteps={4}
+        onBack={() => history.push(newRetroTimerRoutePath(retroShareParamId))}
         onNext={() => history.push(retroRoutePath(retroShareParamId))}
         nextLabel={<FormattedMessage id="navigation.done" />}
         {...this.props}

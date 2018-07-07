@@ -14,6 +14,16 @@ export const RETRO_JOIN_IN_PROGRESS = 'RETRO_JOIN_IN_PROGRESS';
 export const RETRO_JOIN_SUCCESS = 'RETRO_JOIN_SUCCESS';
 export const RETRO_JOIN_FAILURE = 'RETRO_JOIN_FAILURE';
 
+export const ACTION_RETRO_SET_TIMER = 'retro/setTimer';
+export const RETRO_SET_TIMER_IN_PROGRESS = 'RETRO_SET_TIMER_IN_PROGRESS';
+export const RETRO_SET_TIMER_SUCCESS = 'RETRO_SET_TIMER_SUCCESS';
+export const RETRO_SET_TIMER_FAILURE = 'RETRO_SET_TIMER_FAILURE';
+
+export const ACTION_RETRO_UPDATE_TIMER = 'retro/updateTimer';
+export const RETRO_UPDATE_TIMER_IN_PROGRESS = 'RETRO_UPDATE_TIMER_IN_PROGRESS';
+export const RETRO_UPDATE_TIMER_SUCCESS = 'RETRO_UPDATE_TIMER_SUCCESS';
+export const RETRO_UPDATE_TIMER_FAILURE = 'RETRO_UPDATE_TIMER_FAILURE';
+
 export const ACTION_RETRO_LEAVE = 'retro/leave/success';
 export const RETRO_LEAVE = 'RETRO_LEAVE';
 
@@ -22,6 +32,7 @@ export const RETRO_EDIT_IN_PROGRESS = 'RETRO_EDIT_IN_PROGRESS';
 export const RETRO_EDIT_SUCCESS = 'RETRO_EDIT_SUCCESS';
 export const RETRO_EDIT_FAILURE = 'RETRO_EDIT_FAILURE';
 
+export const CARD_FILTER_BY_PHRASE_CHANGE = 'CARD_FILTER_BY_PHRASE';
 
 export const setRetroIdQueryParameter = retroId => (dispatch) => {
   const query = { r: retroId };
@@ -49,4 +60,20 @@ export const retroLeave = (socket, shareId) => (dispatch) => {
 export const retroEdit = (socket, edits) => (dispatch) => {
   socket.emit(ACTION_RETRO_EDIT, edits);
   dispatch({ type: RETRO_EDIT_IN_PROGRESS });
+};
+
+export const changeCardFilterPhrase = phrase => (dispatch) => {
+  dispatch({ type: CARD_FILTER_BY_PHRASE_CHANGE, payload: { phrase } });
+};
+
+export const retroSetTimer = (socket, writeTime, voteTime, reviewTime, allTime) => (dispatch) => {
+  const payload = { writeTime, voteTime, reviewTime, allTime };
+  socket.emit(ACTION_RETRO_SET_TIMER, payload);
+  dispatch({ type: RETRO_SET_TIMER_IN_PROGRESS, payload });
+};
+
+export const retroUpdateTimer = (socket, retroStep, reset = false) => (dispatch) => {
+  const payload = { retroStep, reset };
+  socket.emit(ACTION_RETRO_UPDATE_TIMER, payload);
+  dispatch({ type: RETRO_UPDATE_TIMER_IN_PROGRESS, payload });
 };

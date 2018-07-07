@@ -21,7 +21,7 @@ if (!configuration.database.name) {
   throw new Error('Config error: Missing database name.');
 }
 
-if(process.env.DATABASE){
+if (process.env.DATABASE) {
   configuration.database.host = process.env.DATABASE;
 }
 

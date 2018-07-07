@@ -22,13 +22,17 @@ class Steps extends Component {
     changeStep(socket, key);
   }
 
-  isDisabled = () => {
+  isDisabled = (paramStep) => {
+    const { timerActivated, step, allTime } = this.props;
+    const currentStepIndex = steps.findIndex(s => s.key === step);
+    const stepIndex = steps.findIndex(s => s.key === paramStep);
     const { userId, scrumMasterId } = this.props;
-    return userId !== scrumMasterId;
+    return userId !== scrumMasterId || (timerActivated && !allTime && stepIndex < currentStepIndex);
   }
 
   render() {
     const { classes, step } = this.props;
+
     return (
       <Card className={classes.scrumMasterPanel}>
         <Stepper activeStep={steps.findIndex(s => s.key === step)} alternativeLabel nonLinear>
@@ -37,7 +41,7 @@ class Steps extends Component {
               <StepButton
                 onClick={this.handleStep(key)}
                 className={classes.stepButton}
-                disabled={this.isDisabled()}
+                disabled={this.isDisabled(key)}
               >
                 <span className="retro-step-label" >
                   <FormattedMessage id={`retro-steps.${key}`} />
@@ -55,11 +59,17 @@ Steps.contextTypes = {
   socket: PropTypes.object.isRequired
 };
 
+Steps.defaultProps = {
+  allTime: null,
+  timerActivated: false
+};
 Steps.propTypes = {
   userId: PropTypes.string.isRequired,
   scrumMasterId: PropTypes.string.isRequired,
   step: PropTypes.string.isRequired,
   changeStep: PropTypes.func.isRequired,
+  timerActivated: PropTypes.bool,
+  allTime: PropTypes.number,
   classes: PropTypes.shape({
     stepButton: PropTypes.string.isRequired,
     scrumMasterPanel: PropTypes.string.isRequired

@@ -1,9 +1,12 @@
 import { withStyles } from 'material-ui/styles';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { DragDropContext } from 'react-dnd';
+import MultiBackend from 'react-dnd-multi-backend';
+import HTML5toTouch from 'react-dnd-multi-backend/lib/HTML5toTouch';
 import styles from './../../components/Retro/Retro.styles';
 import Retro from '../../components/Retro';
-import { retroJoin, setRetroIdQueryParameter } from '../../actions/retro';
+import { retroJoin, setRetroIdQueryParameter, changeCardFilterPhrase } from '../../actions/retro';
 import { columnAdd, columnRemove } from '../../actions/column';
 import {
   COLUMN_ADD_QUERY_KEY,
@@ -15,9 +18,10 @@ import {
   RETRO_RENAME_QUERY_KEY, RETRO_SCRUM_MASTER_ID_KEY,
   RETRO_SHARE_ID_KEY,
   RETRO_STEP_KEY,
-  RETRO_USERS_KEY
+  RETRO_USERS_KEY,
+  RETRO_TIMER_DEADLINE_KEY
 } from '../../reducers/retro';
-import { addMessage } from '../../actions/layout';
+import { addMessage, openExportDialog, openRetroTimerDialog } from '../../actions/layout';
 import { USER_CONNECT_QUERY_KEY, USER_ID_KEY } from '../../reducers/user';
 
 const mapStateToProps = ({ retro, user }) => ({
@@ -33,7 +37,8 @@ const mapStateToProps = ({ retro, user }) => ({
   joinRetroQuery: retro[RETRO_JOIN_QUERY_KEY],
   renameRetroQuery: retro[RETRO_RENAME_QUERY_KEY],
   addColumnQuery: retro[COLUMN_ADD_QUERY_KEY],
-  removeColumnQuery: retro[COLUMN_REMOVE_QUERY_KEY]
+  removeColumnQuery: retro[COLUMN_REMOVE_QUERY_KEY],
+  deadline: retro[RETRO_TIMER_DEADLINE_KEY]
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -41,9 +46,12 @@ const mapDispatchToProps = dispatch => ({
   addColumn: (socket, name, icon) => dispatch(columnAdd(socket, name, icon)),
   removeColumn: (socket, id) => dispatch(columnRemove(socket, id)),
   setRetroId: retroId => dispatch(setRetroIdQueryParameter(retroId)),
-  addMessage: message => dispatch(addMessage(message))
+  addMessage: message => dispatch(addMessage(message)),
+  changeCardFilterPhrase: phrase => dispatch(changeCardFilterPhrase(phrase)),
+  openExportDialog: () => dispatch(openExportDialog(true)),
+  openRetroTimerDialog: open => dispatch(openRetroTimerDialog(open))
 });
 
 export default withRouter(withStyles(styles, { withTheme: true })(
-  connect(mapStateToProps, mapDispatchToProps)(Retro)
+  connect(mapStateToProps, mapDispatchToProps)(DragDropContext(MultiBackend(HTML5toTouch))(Retro))
 ));

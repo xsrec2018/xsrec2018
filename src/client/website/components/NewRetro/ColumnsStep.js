@@ -15,7 +15,7 @@ import { InputLabel } from '../../../../../node_modules/material-ui/Input/index'
 import { FormControl } from '../../../../../node_modules/material-ui/Form/index';
 import BaseStep from './BaseStep';
 import { QUERY_STATUS_IN_PROGRESS, QUERY_STATUS_KEY } from '../../services/websocket/query';
-import { newRetroShareRoutePath } from '../../routes/NewRetro/MainRoutes';
+import { newRetroTimerRoutePath } from '../../routes/NewRetro/MainRoutes';
 
 class ColumnsStep extends Component {
   componentWillMount() {
@@ -35,7 +35,7 @@ class ColumnsStep extends Component {
 
   shareRetro = () => {
     const { history, retroShareId } = this.props;
-    history.push(newRetroShareRoutePath(retroShareId));
+    history.push(newRetroTimerRoutePath(retroShareId));
   };
 
   removeColumn = (column) => {
@@ -56,7 +56,7 @@ class ColumnsStep extends Component {
     return (
       <BaseStep
         step={1}
-        maxSteps={3}
+        maxSteps={4}
         onNext={hasMinColumns ? this.shareRetro : undefined}
         {...this.props}
       >

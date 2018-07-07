@@ -49,6 +49,27 @@ const retroSchema = new mongoose.Schema({
   columns: [columnSchema],
   cards: [cardSchema],
   voteLimit: Number,
+  timerActivated: Boolean,
+  writeTime: {
+    type: Number,
+    default: null
+  },
+  voteTime: {
+    type: Number,
+    default: null
+  },
+  reviewTime: {
+    type: Number,
+    default: null
+  },
+  allTime: {
+    type: Number,
+    default: null
+  },
+  deadline: {
+    type: Date,
+    deafult: null
+  },
   step: {
     type: String,
     default: 'write',

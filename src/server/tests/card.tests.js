@@ -8,6 +8,7 @@ import { ACTION_CARD_ADD, ACTION_CARD_EDIT, ACTION_CARD_REMOVE } from '../action
 import handlers from '../actions/card/card.handlers';
 import { getId, getIds } from '../utils';
 import { assertError } from './test.utils';
+import logger from '../logger';
 
 describe('Card actions', () => {
   let testState;

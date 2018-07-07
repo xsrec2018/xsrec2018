@@ -41,3 +41,4 @@ export const lightGrey = '#e1e1e1';
 export const darkGrey = '#5a6779';
 export const bad = '#b1131b';
 export const good = '#27ae60';
+export const lightBlue = '#c6e5ff';

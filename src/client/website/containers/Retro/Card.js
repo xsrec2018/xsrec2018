@@ -6,6 +6,7 @@ import Card from '../../components/Retro/Card';
 import {
   CARD_EDIT_QUERY_KEY,
   CARD_REMOVE_QUERY_KEY,
+  CARD_MERGE_QUERY_KEY,
   COLUMN_EDIT_QUERY_KEY,
   RETRO_USERS_KEY,
   RETRO_STEP_KEY,
@@ -13,7 +14,7 @@ import {
 } from '../../reducers/retro';
 import { cardEdit, cardRemove } from '../../actions/card';
 import { USER_ID_KEY } from '../../reducers/user';
-import { addMessage } from '../../actions/layout';
+import { addMessage, openMergeCardsDialog } from '../../actions/layout';
 import { getUserSubmittedVotes } from '../../selectors/votes';
 
 
@@ -23,6 +24,7 @@ const mapStateToProps = ({ retro, user }) => ({
   retroStep: retro[RETRO_STEP_KEY],
   editColumnQuery: retro[COLUMN_EDIT_QUERY_KEY],
   editCardQuery: retro[CARD_EDIT_QUERY_KEY],
+  mergeCardQuery: retro[CARD_MERGE_QUERY_KEY],
   removeCardQuery: retro[CARD_REMOVE_QUERY_KEY],
   votes: retro[RETRO_VOTE_LIMIT_KEY],
   userSubmmitedVotes: getUserSubmittedVotes({ retro, user })
@@ -31,6 +33,9 @@ const mapStateToProps = ({ retro, user }) => ({
 const mapDispatchToProps = dispatch => ({
   editCard: (socket, card) => dispatch(cardEdit(socket, card)),
   removeCard: (socket, cardId) => dispatch(cardRemove(socket, cardId)),
+  openMergeCardsDialog: (socket, sourceCardId, targetCardId) => dispatch(
+    openMergeCardsDialog(socket, sourceCardId, targetCardId)
+  ),
   addMessage: message => dispatch(addMessage(message))
 });
 

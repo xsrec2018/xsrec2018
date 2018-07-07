@@ -70,6 +70,11 @@ const styles = theme => ({
   addColumnsInfo: {
     color: theme.palette.midGrey,
     marginTop: '30px'
+  },
+  timer: {
+    backgroundColor: '#fff',
+    margin: '20px',
+    padding: '20px'
   }
 });
 

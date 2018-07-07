@@ -13,6 +13,12 @@ export const CARD_REMOVE_IN_PROGRESS = 'CARD_REMOVE_IN_PROGRESS';
 export const CARD_REMOVE_SUCCESS = 'CARD_REMOVE_SUCCESS';
 export const CARD_REMOVE_FAILURE = 'CARD_REMOVE_FAILURE';
 
+export const ACTION_CARD_MERGE = 'card/merge';
+export const CARD_MERGE_IN_PROGRESS = 'CARD_MERGE_IN_PROGRESS';
+export const CARD_MERGE_SUCCESS = 'CARD_MERGE_SUCCESS';
+export const CARD_MERGE_FAILURE = 'CARD_MERGE_FAILURE';
+
+
 export const cardAdd = (socket, columnId, text) => (dispatch) => {
   socket.emit(ACTION_CARD_ADD, { columnId, text });
   dispatch({ type: CARD_ADD_IN_PROGRESS });
@@ -26,4 +32,9 @@ export const cardRemove = (socket, cardId) => (dispatch) => {
 export const cardEdit = (socket, card) => (dispatch) => {
   socket.emit(ACTION_CARD_EDIT, card);
   dispatch({ type: CARD_EDIT_IN_PROGRESS });
+};
+
+export const cardMerge = (socket, sourceCardId, targetCardId) => (dispatch) => {
+  socket.emit(ACTION_CARD_MERGE, { sourceCardId, targetCardId });
+  dispatch({ type: CARD_MERGE_IN_PROGRESS });
 };

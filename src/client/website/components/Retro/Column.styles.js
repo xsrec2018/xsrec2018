@@ -11,15 +11,19 @@ const styles = theme => ({
     borderRadius: 3,
     padding: theme.spacing.unit
   },
+  columnItemHover: {
+    backgroundColor: theme.palette.lightBlue
+  },
   header: {
     display: 'flex',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-end',
     alignItems: 'center'
   },
   columnTitle: {
     color: theme.palette.greyBlue,
     fontSize: '16px',
-    fontWeight: '700'
+    fontWeight: '700',
+    marginRight: 'auto'
   },
   addCardIcon: {
     float: 'right',
@@ -30,6 +34,9 @@ const styles = theme => ({
     '&:hover': {
       color: theme.palette.good
     }
+  },
+  iconActive: {
+    color: theme.palette.good
   },
   addCardContainer: {
     display: 'flex',
