@@ -17,7 +17,12 @@ const mockProps = {
 const mockContext = {
   socket: {},
   store: configureMockStore()({
-    user: {}
+    user: {},
+    retro: {
+      join: {
+        status: ''
+      }
+    }
   })
 };
 
@@ -36,6 +41,7 @@ describe(`${App.name} component`, () => {
       </BrowserRouter>,
       { context: mockContext, childContextTypes }
     );
+
     expect(wrapper.find('Header'), 'Header').to.have.length(1);
     expect(wrapper.find('section'), 'section').to.have.length(1);
     expect(wrapper.find('div.test'), 'div.test').to.have.length(1);

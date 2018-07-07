@@ -1,11 +1,13 @@
+import moment from 'moment';
 import Retro from '../../models/retro.model';
 import User from '../../models/user.model';
 import { getId, isValidId, toMongoId, urlSafeBase64ToHex } from '../../utils';
 import {
   ACTION_RETRO, ACTION_RETRO_JOIN, ACTION_RETRO_LEAVE, ACTION_RETRO_NEW,
-  ACTION_RETRO_EDIT
+  ACTION_RETRO_EDIT, ACTION_RETRO_SET_TIMER, ACTION_RETRO_UPDATE_TIMER
 } from './retro.actions';
 import logger from '../../logger';
+import { calculateNewDeadline } from './helpers';
 
 export default {
   [ACTION_RETRO_NEW]: async (params, state, perform) => {
@@ -96,7 +98,6 @@ export default {
     };
   },
   [ACTION_RETRO_LEAVE]: async (params, state) => {
-
     const { retroId } = params;
     const { userId } = state;
     const disconnectedUser = await Retro.findOneAndUpdate({
@@ -123,6 +124,59 @@ export default {
     const retro = await Retro.findById(retroId).populate('users.user').populate('cards.authors');
     return {
       emit: retro.toJSON()
+    };
+  },
+  [ACTION_RETRO_SET_TIMER]: async (params, state) => {
+    const { retroId, userId } = state;
+    const { writeTime, voteTime, reviewTime, allTime } = params;
+    const retro = await Retro.findById(retroId);
+
+    if (!retro.participates(userId)) {
+      throw new Error('You are not participating in a retrospective.');
+    }
+    if (!retro.isScrumMaster(userId)) {
+      throw new Error('Only a scrum master can edit a retrospective.');
+    }
+
+    const updated = await Retro.findByIdAndUpdate(retroId, {
+      writeTime,
+      voteTime,
+      reviewTime,
+      allTime,
+      timerActivated: true,
+      deadline: moment().add(allTime === 0 ? writeTime : allTime, 'minutes').toDate()
+    }, {
+      new: true
+    });
+    if (!updated) {
+      throw new Error('Couldn\'t update retrospective.');
+    }
+    return {
+      broadcast: { ...updated.toObject() }
+    };
+  },
+  [ACTION_RETRO_UPDATE_TIMER]: async (params, state) => {
+    const { retroId, userId } = state;
+    const { retroStep, reset } = params;
+    const retro = await Retro.findById(retroId);
+
+    if (!retro.participates(userId)) {
+      throw new Error('You are not participating in a retrospective.');
+    }
+    if (!retro.isScrumMaster(userId)) {
+      throw new Error('Only a scrum master can edit a retrospective.');
+    }
+
+    const updated = await Retro.findByIdAndUpdate(retroId, {
+      deadline: calculateNewDeadline(retro, retroStep, reset)
+    }, {
+      new: true
+    });
+    if (!updated) {
+      throw new Error('Couldn\'t update retrospective.');
+    }
+    return {
+      broadcast: { ...updated.toObject() }
     };
   }
 };

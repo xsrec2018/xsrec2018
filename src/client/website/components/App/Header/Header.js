@@ -1,5 +1,8 @@
 import React from 'react';
+import moment from 'moment';
+import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
+import Countdown from 'react-countdown-now';
 import PropTypes from 'prop-types';
 import { AppBar, IconButton, Typography, Toolbar, Tooltip } from 'material-ui';
 import Chat from 'material-ui-icons/Chat';
@@ -11,9 +14,13 @@ const Header = ({
   headline,
   retroId,
   openChangeNameDialog,
+  openRetroTimerDialog,
   children,
   leaveRetro,
-  userName
+  userName,
+  deadline,
+  timerActivated,
+  retroStep
 }, { socket }) => (
   <header>
     <AppBar
@@ -32,6 +39,15 @@ const Header = ({
         <Typography type="headline" className={classes.headline}>
           {headline}
         </Typography>
+        {timerActivated && deadline && retroStep !== 'closed' ? (
+          <div className={classes.timer}>
+            <FormattedMessage id="retro.remaining-time" />: &nbsp;
+            <Countdown
+              date={moment(deadline).toDate()}
+              onComplete={() => { openRetroTimerDialog(true); }}
+            />
+          </div>
+        ) : ''}
         <div className={classes.actionButtons}>
           {children}
           <IconButton onClick={openChangeNameDialog} className={classes.icon}>
@@ -42,7 +58,6 @@ const Header = ({
               </div>
             </Tooltip>
           </IconButton>
-
         </div>
       </Toolbar>
     </AppBar>
@@ -52,7 +67,10 @@ const Header = ({
 Header.defaultProps = {
   headline: '',
   userName: '',
-  retroId: null
+  retroId: null,
+  timerActivated: false,
+  deadline: null,
+  retroStep: null
 };
 
 Header.propTypes = {
@@ -61,8 +79,12 @@ Header.propTypes = {
   headline: PropTypes.string,
   retroId: PropTypes.string,
   children: PropTypes.node.isRequired,
+  timerActivated: PropTypes.bool,
   openChangeNameDialog: PropTypes.func.isRequired,
+  openRetroTimerDialog: PropTypes.func.isRequired,
   leaveRetro: PropTypes.func.isRequired,
+  deadline: PropTypes.string,
+  retroStep: PropTypes.string,
   // Styles
   classes: PropTypes.shape({
     appBar: PropTypes.string.isRequired,

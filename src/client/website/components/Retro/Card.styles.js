@@ -9,8 +9,15 @@ const styles = theme => ({
     boxShadow: '0 9px 0 -2px rgba(0,0,0,0.05), 0 2px rgba(0,0,0,.1)',
     borderRadius: '4px'
   },
+  cardHover: {
+    backgroundColor: theme.palette.lightBlue
+  },
+  cardHide: {
+    opacity: 0.2
+  },
   cardActions: {
-    height: 'auto'
+    height: 'auto',
+    margin: '0px -10px'
   },
   expander: {
     flexGrow: 1
@@ -25,7 +32,7 @@ const styles = theme => ({
     fontSize: '11px',
     fontWeight: 'bold',
     color: '#aaa',
-    margin: '0px',
+    margin: '0px 10px',
     minWidth: '20px',
     padding: '0px 6px',
     background: '#eee'

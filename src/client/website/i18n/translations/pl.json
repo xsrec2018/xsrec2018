@@ -8,9 +8,22 @@
     "moderator-panel": "PANEL MODERATORA",
     "add-card-label": "O czym myślisz?",
     "confirm-delete-card": "Czy na pewno chcesz usunąć?",
+    "confirm-group-card": "Czy na pewno chcesz połączyć kartki?",
     "remaining-votes": "Pozostało głosów",
     "previous-step": "Wróć do poprzedniego etapu spotkania",
-    "next-step": "Przejdź do kolejnego etapu spotkania"
+    "next-step": "Przejdź do kolejnego etapu spotkania",
+    "export": "Eksportuj",
+    "write-time": "Czas na pisanie",
+    "vote-time": "Czas na głosowanie",
+    "discuss-time": "Czas na omawianie",
+    "all-time": "Czas na całość",
+    "greather-than-zero": "Czas musi być większy od 0",
+    "set-time": "Chcę ustawić czas dla poszczególnych etapów(w minutach)",
+    "remaining-time": "Pozostały czas",
+    "expiration-description": "Upłynął czas przeznaczony na tą sekcję, zaczekaj na reakcję Scrum Mastera",
+    "expiration-description-scrum-master": "Upłynął czas przeznaczony na tą sekcję, zdecyduj co dalej",
+    "expiration-restart": "Zrestartuj czas etapu",
+    "expiration-go-next": "Przejdź do kolejnego etapu"
   },
   "retro-steps": {
     "write": "Zgłoś swoje spostrzeżenia",
@@ -63,5 +76,9 @@
   },
   "about": {
     "description": "Framework OCRA został utworzony w rezultacie wielu podjętych decyzji przez Mateusza Grzesiukiewicza. Powstał z myślą bycia boilerplate który umożliwia łatwe i szybke rozpoczęcie pracy nad aplikacją produkcyjną. Stack technologiczny jest łatwy do zmiany, wybierz tylko to co lubisz. Biblioteki mogą być łatwo wymienione na alternatywy ale OCRA z założenia będzie starała się zawsze być kompatybilna ze zmianami zespołu Create React App."
+  },
+  "export-dialog": {
+    "header": "Eksportuj karty",
+    "description": "Wybierz format i kliknij w przycisk aby zaakceptowac"
   }
 }

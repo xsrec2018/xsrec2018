@@ -27,7 +27,7 @@ class ModeratorPanel extends Component {
   }
 
   render() {
-    const { isScrumMaster, retroStep, classes } = this.props;
+    const { isScrumMaster, retroStep, classes, retroTimerActivated, allTime } = this.props;
     return (
       <div>
         {isScrumMaster &&
@@ -37,7 +37,7 @@ class ModeratorPanel extends Component {
               position="static"
               color="default"
             >
-              <Toolbar>
+              <Toolbar className={classes.toolbarWrapper}>
                 <div className={classes.leftDiv}>
                   <div className="logotype">
                     <FormattedMessage id="retro.moderator-panel" />
@@ -52,6 +52,7 @@ class ModeratorPanel extends Component {
                       color="primary"
                       className={classes.button}
                       onClick={this.handlePreviousStep(retroStep)}
+                      disabled={retroTimerActivated && !allTime}
                     >
                       <FormattedMessage id="retro.previous-step" />
                     </Button>
@@ -78,7 +79,9 @@ class ModeratorPanel extends Component {
 }
 
 ModeratorPanel.defaultProps = {
-  retroStep: ''
+  retroStep: '',
+  allTime: null,
+  retroTimerActivated: false
 };
 
 ModeratorPanel.propTypes = {
@@ -86,6 +89,8 @@ ModeratorPanel.propTypes = {
   isScrumMaster: PropTypes.bool.isRequired,
   changeStep: PropTypes.func.isRequired,
   retroStep: PropTypes.string,
+  retroTimerActivated: PropTypes.bool,
+  allTime: PropTypes.number,
   // Styles
   classes: PropTypes.shape({
     appBarContainer: PropTypes.string.isRequired,

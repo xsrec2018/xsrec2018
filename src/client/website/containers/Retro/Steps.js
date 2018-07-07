@@ -4,13 +4,15 @@ import { connect } from 'react-redux';
 import styles from './../../components/Retro/Steps.styles';
 import Steps from '../../components/Retro/Steps';
 import { changeStep } from '../../actions/steps';
-import { RETRO_SCRUM_MASTER_ID_KEY, RETRO_STEP_KEY } from '../../reducers/retro';
+import { RETRO_SCRUM_MASTER_ID_KEY, RETRO_STEP_KEY, RETRO_TIMER_ACTIVATED_KEY, RETRO_TIMER_ALL_TIME_KEY } from '../../reducers/retro';
 import { USER_ID_KEY } from '../../reducers/user';
 
 const mapStateToProps = ({ retro, user }) => ({
   userId: user[USER_ID_KEY],
   scrumMasterId: retro[RETRO_SCRUM_MASTER_ID_KEY],
-  step: retro[RETRO_STEP_KEY]
+  timerActivated: retro[RETRO_TIMER_ACTIVATED_KEY],
+  step: retro[RETRO_STEP_KEY],
+  allTime: retro[RETRO_TIMER_ALL_TIME_KEY]
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { FormattedMessage } from 'react-intl';
+import moment from 'moment';
 import PropTypes from 'prop-types';
 import {
   Avatar,
@@ -10,6 +12,9 @@ import {
   Typography
 } from 'material-ui';
 import { CircularProgress } from 'material-ui/Progress';
+import TextField from 'material-ui/TextField';
+import Grid from 'material-ui/Grid';
+import Search from 'material-ui-icons/Search';
 import {
   QUERY_ERROR_KEY,
   QUERY_STATUS_FAILURE,
@@ -23,20 +28,40 @@ import Column from '../../containers/Retro/Column';
 import Steps from '../../containers/Retro/Steps';
 import { initialsOf } from '../../services/utils/initials';
 
+
 class Retro extends Component {
   componentWillMount() {
     this.joinRetro();
   }
 
+  componentDidMount() {
+    this.onSearchPhraseChange = this.onSearchPhraseChange.bind(this);
+  }
+
   componentWillReceiveProps(nextProps) {
     const { addColumnQuery, connectQuery, addMessage } = this.props;
-    const { addColumnQuery: nextAddColumnQuery, connectQuery: nextConnectQuery } = nextProps;
+    const {
+      addColumnQuery: nextAddColumnQuery,
+      connectQuery: nextConnectQuery,
+      deadline,
+      openRetroTimerDialog
+    } = nextProps;
     if (queryFailed(addColumnQuery, nextAddColumnQuery)) {
       addMessage(nextAddColumnQuery[QUERY_ERROR_KEY]);
     }
     if (querySucceeded(connectQuery, nextConnectQuery)) {
       this.joinRetro();
     }
+
+    if (deadline && moment(deadline).isBefore(moment())) {
+      openRetroTimerDialog(true);
+    } else if (deadline && moment(deadline).isAfter(moment())) {
+      openRetroTimerDialog(false);
+    }
+  }
+
+  onSearchPhraseChange = (e) => {
+    this.props.changeCardFilterPhrase(e.target.value);
   }
 
   joinRetro = () => {
@@ -51,6 +76,7 @@ class Retro extends Component {
       columns,
       users,
       history,
+      openExportDialog,
       joinRetroQuery: {
         [QUERY_STATUS_KEY]: joinStatus,
         [QUERY_ERROR_KEY]: joinError
@@ -61,6 +87,16 @@ class Retro extends Component {
         return (
           <div className={classes.root}>
             <Steps />
+            <div>
+              <Grid className={classes.searchBox} container spacing={8} alignItems="flex-end">
+                <Grid item>
+                  <Search />
+                </Grid>
+                <Grid item>
+                  <TextField onChange={this.onSearchPhraseChange} id="input-with-icon-grid" label="Szukaj" />
+                </Grid>
+              </Grid>
+            </div>
             <div className={classes.columns}>
               {columns.map(column => (
                 <Column key={column.id} column={column} />
@@ -77,6 +113,16 @@ class Retro extends Component {
                   </Avatar>
                 </Tooltip>
               ))}
+            </div>
+            <div className={classes.export}>
+              <Button
+                raised
+                variant="contained"
+                color="primary"
+                onClick={openExportDialog}
+              >
+                <FormattedMessage id="retro.export" />
+              </Button>
             </div>
           </div>
         );
@@ -110,6 +156,10 @@ Retro.contextTypes = {
   socket: PropTypes.object.isRequired
 };
 
+Retro.defaultProps = {
+  deadline: null
+};
+
 Retro.propTypes = {
   // Values
   history: PropTypes.object.isRequired,
@@ -123,6 +173,7 @@ Retro.propTypes = {
     icon: PropTypes.string.isRequired
   })).isRequired,
   users: PropTypes.object.isRequired,
+  deadline: PropTypes.string,
   // Queries
   connectQuery: PropTypes.shape(QueryShape).isRequired,
   joinRetroQuery: PropTypes.shape(QueryShape).isRequired,
@@ -130,6 +181,9 @@ Retro.propTypes = {
   // Functions
   joinRetro: PropTypes.func.isRequired,
   addMessage: PropTypes.func.isRequired,
+  changeCardFilterPhrase: PropTypes.func.isRequired,
+  openExportDialog: PropTypes.func.isRequired,
+  openRetroTimerDialog: PropTypes.func.isRequired,
   // Styles
   classes: PropTypes.shape({
     avatar: PropTypes.string.isRequired,

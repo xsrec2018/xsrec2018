@@ -37,6 +37,10 @@ const styles = theme => ({
   userName: {
     fontSize: 'small',
     marginLeft: '8px'
+  },
+  timer: {
+    color: '#fff',
+    fontWeight: '800'
   }
 });
 

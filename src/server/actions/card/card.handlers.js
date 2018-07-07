@@ -1,7 +1,13 @@
 import mongoose from 'mongoose';
+import uniq from 'lodash/uniq';
 import Retro from '../../models/retro.model';
 import User from '../../models/user.model';
-import { ACTION_CARD_ADD, ACTION_CARD_EDIT, ACTION_CARD_REMOVE } from './card.actions';
+import {
+  ACTION_CARD_ADD,
+  ACTION_CARD_EDIT,
+  ACTION_CARD_REMOVE,
+  ACTION_CARD_MERGE
+} from './card.actions';
 import { getId, getIds } from '../../utils';
 
 export default {
@@ -50,7 +56,7 @@ export default {
   },
   [ACTION_CARD_EDIT]: async (params, state) => {
     const { retroId, userId } = state;
-    const { text, id, addVote, removeVote } = params;
+    const { text, id, addVote, removeVote, columnId } = params;
     const retro = await Retro.findById(retroId).populate('cards.authors');
     if (!retro.participates(userId)) {
       throw new Error('You are not participating in a retrospective.');
@@ -64,6 +70,7 @@ export default {
       card.votes.splice(key, 1);
     }
     if (text) card.text = text;
+    if (columnId) card.columnId = columnId;
 
     const updatedRetro = await retro.save();
 
@@ -75,7 +82,8 @@ export default {
         id,
         text: card.text,
         authors: card.authors,
-        votes: getIds(card.votes)
+        votes: getIds(card.votes),
+        columnId: card.columnId
       }
     };
   },
@@ -103,6 +111,45 @@ export default {
     return {
       broadcast: {
         id
+      }
+    };
+  },
+  [ACTION_CARD_MERGE]: async (params, state) => {
+    const { retroId, userId } = state;
+    const { sourceCardId, targetCardId } = params;
+    const retro = await Retro.findById(retroId).populate('cards.authors');
+    if (!retro.participates(userId)) {
+      throw new Error('You are not participating in a retrospective.');
+    }
+
+    // it could be done in one loop
+    const sourceCardIndex = retro.cards.findIndex(c => c.id === sourceCardId);
+    const targetCardIndex = retro.cards.findIndex(c => c.id === targetCardId);
+    const sourceCard = retro.cards[sourceCardIndex];
+    const targetCard = retro.cards[targetCardIndex];
+
+    sourceCard.text = `${sourceCard.text}\n${targetCard.text}`;
+    sourceCard.authors = uniq([...sourceCard.authors, ...targetCard.authors], author => author.id);
+
+    const updated = await Retro.findOneAndUpdate({
+      _id: retroId,
+      cards: { $elemMatch: { _id: targetCard.id } }
+    }, {
+      $pull: { cards: { _id: targetCard.id } }
+    }, {
+      new: true
+    }).exec();
+
+    const updatedRetro = await retro.save();
+
+    if (!updatedRetro || !updated) {
+      throw new Error('Card not merge because it doesn\'t exist or you don\'t have sufficient privileges.');
+    }
+    return {
+      broadcast: {
+        sourceCard,
+        targetCard,
+        sourceCardText: sourceCard.text
       }
     };
   }

@@ -10,7 +10,18 @@
     "confirm-delete-card": "Are you sure you want to delete?",
     "remaining-votes": "Remaining votes",
     "previous-step": "Go back to the previous step",
-    "next-step": "Proceed to the next step of the meeting"
+    "next-step": "Proceed to the next step of the meeting",
+    "export": "Export",
+    "write-time": "Write stage time",
+    "vote-time": "Vote stage time",
+    "discuss-time": "Review stage time",
+    "all-time": "All stages time",
+    "set-time": "I want to set the time for invidual stages",
+    "remaining-time": "Remaining time",
+    "expiration-description": "Time spent on this stage expired. Wait for Scrum Master decision",
+    "expiration-description-scrum-master": "Time spent on this stage expired. Decide what you want to do next",
+    "expiration-restart": "restart time for this stage",
+    "expiration-go-next": "Go to the next stage"
   },
   "retro-steps": {
     "write": "Write your thoughts",
@@ -63,5 +74,9 @@
   },
   "about": {
     "description": "OCRA framework was created in the result of long chain of biased opinions by Mateusz Grzesiukiewicz. It is meant to serve as a boilerplate and provide possibility of rapid development of production quality apps. Feel free to adjust tech stack to your needs. The libraries can be easily replaced and the framework is meant to be always compatible with updates & upgrades from Create React App team."
+  },
+  "export-dialog": {
+    "header": "Export cards",
+    "description": "choose format and press the button bellow"
   }
 }

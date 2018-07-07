@@ -27,6 +27,10 @@ const styles = theme => ({
   button: {
     marginLeft: theme.spacing.unit * 2,
     marginTop: theme.spacing.unit
+  },
+  toolbarWrapper: {
+    display: 'flex',
+    flexDirection: 'column'
   }
 });
 

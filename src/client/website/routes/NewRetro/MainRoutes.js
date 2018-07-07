@@ -4,15 +4,19 @@ import PropTypes from 'prop-types';
 import NameStep from '../../containers/NewRetro/NameStep';
 import ColumnsStep from '../../containers/NewRetro/ColumnsStep';
 import ShareStep from '../../containers/NewRetro/ShareStep';
+import TimerStep from '../../containers/NewRetro/TimerStep';
 
 export const NEW_RETRO_ROUTE_PATH = '/new';
 export const NEW_RETRO_COLUMNS_ROUTE_PATH = '/new/:retroShareId/columns';
+export const NEW_RETRO_TIMER_ROUTE_PATH = '/new/:retroShareId/timer';
 export const NEW_RETRO_SHARE_ROUTE_PATH = '/new/:retroShareId/share';
 
 export const newRetroColumnsRoutePath = retroShareId =>
   NEW_RETRO_COLUMNS_ROUTE_PATH.replace(':retroShareId', retroShareId);
 export const newRetroShareRoutePath = retroShareId =>
   NEW_RETRO_SHARE_ROUTE_PATH.replace(':retroShareId', retroShareId);
+export const newRetroTimerRoutePath = retroShareId =>
+  NEW_RETRO_TIMER_ROUTE_PATH.replace(':retroShareId', retroShareId);
 
 export const NewRetroRoute = props => (
   <Route
@@ -30,6 +34,14 @@ export const NewRetroColumnsRoute = props => (
     {...props}
   />
 );
+export const NewRetroTimerRoute = props => (
+  <Route
+    exact
+    path={NEW_RETRO_TIMER_ROUTE_PATH}
+    component={TimerStep}
+    {...props}
+  />
+);
 export const NewRetroShareRoute = props => (
   <Route
     exact
@@ -43,4 +55,4 @@ NewRetroRoute.propTypes = {
   location: PropTypes.object.isRequired
 };
 
-export default [NewRetroRoute, NewRetroColumnsRoute, NewRetroShareRoute];
+export default [NewRetroRoute, NewRetroColumnsRoute, NewRetroShareRoute, NewRetroTimerRoute];
